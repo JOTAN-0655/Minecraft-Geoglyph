@@ -1,0 +1,10 @@
+api-version: 1.17
+name: MinecraftGeoglyph
+main: jotan.geoglyph.Main
+version: 1.0.0
+load: POSTWORLD
+author: JOTAN
+commands: 
+   geoglyph:
+      description: A command for Minecraft Geoglyph
+      usage: /geoglyph
