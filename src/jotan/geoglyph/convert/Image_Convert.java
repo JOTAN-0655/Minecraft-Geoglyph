@@ -79,26 +79,37 @@ public class Image_Convert {
 			}
 
 			Block_Data bd = new Block_Data();
+			Block_Data base = new Block_Data();
 			bd.setX(x);
 			switch(direction) {
 			case HORIZONTAL:
 				bd.setZ(y);
+
+				base.setX(bd.getX());
+				base.setZ(bd.getZ());
+				base.setY(bd.getY()-1);
 				break;
 			case DIAGONAL:
 				bd.setZ(y);
 				bd.setY(-y);
+
+				base.setX(bd.getX());
+				base.setZ(bd.getZ());
+				base.setY(bd.getY()-1);
 				break;
 			default:
 				bd.setY(-y);
+
+				base.setX(bd.getX());
+				base.setZ(bd.getZ()-1);
+				base.setY(bd.getY());
 				break;
 			}
 			bd.setMaterial(bc.getMaterial());
 			data.add(bd);
 
-			Block_Data base = new Block_Data();
-			base.setX(x);
-			base.setZ(y);
-			base.setY(bd.getY()-1);
+
+
 			base.setMaterial(Material.STONE);
 			data.add(base);
 
