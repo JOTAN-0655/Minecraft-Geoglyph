@@ -3,7 +3,7 @@ Geoglyph in minecraft
 
 # Commands
 ## Generate Geoglyph
-/geoglyph gen [BLOCK PATTERN] [RESIZE %] [DIRECTON] [SPEED] [URL]
+`/geoglyph gen [BLOCK PATTERN] [RESIZE %] [DIRECTON] [SPEED] [URL]`
 ### BLOCK PATTERN
 This comes with these settings.
 
@@ -53,9 +53,14 @@ This comes with next setting
 - INSTANT
 
 ### URL
-A url to image.
+A url to image.<br>
+
+## Generate mono geoglyph
+`/geoglyph gen_mono [RESIZE %] [DIRECTON] [SPEED] [URL]`
+RESIZE,DIRECTION,SPEED,URL is as same as normal gen command.
 
 ## Cancel generate geoglyph
-/geoglyph cancel
+`/geoglyph cancel`
+
 ## Search Near Block
-/geoglyph near_block [R] [G] [B] [0~316]
+`/geoglyph near_block [R] [G] [B] [0~316]`
