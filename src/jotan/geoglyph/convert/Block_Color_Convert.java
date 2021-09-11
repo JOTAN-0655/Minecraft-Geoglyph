@@ -46,41 +46,51 @@ public class Block_Color_Convert {
 			return get_Diff_R()*get_Diff_R() + get_Diff_G()*get_Diff_G() + get_Diff_B()*get_Diff_B();
 		}
 
-		public static List<Block_Color_Target_Data> get_from_Near(Color col){
-			List<Block_Color_Target_Data> list = new ArrayList<Block_Color_Target_Data>();
-			List<Block_Color> choose = new ArrayList<Block_Color>(Arrays.asList(Block_Color.values()));
-
-			while(true) {
-				Block_Color_Target_Data sel = null;
-				for(Block_Color bl : choose) {
-					Block_Color_Target_Data bl_data = new Block_Color_Target_Data(bl,col);
-					if(sel == null) {
-						sel = bl_data;
-						continue;
-					}
-					if(sel.get_Diff_Dist() > bl_data.get_Diff_Dist()) {
-						sel = bl_data;
-					}
-				}
-				list.add(sel);
-				choose.remove(sel.getBlock_color());
-				if(choose.size() == 0) break;
-			}
-
-			return list;
-		}
-
-		public static Block_Color_Target_Data get_Most_Near(Color col,List<Block_Type> filter) {
-			Block_Color_Target_Data sel = new Block_Color_Target_Data(Block_Color.ACACIA_LOG,col);
-			for(Block_Color bc : Block_Color.values()) {
-				Block_Color_Target_Data comp = new Block_Color_Target_Data(bc,col);
-				if(filter!=null) {
-					if(!filter.contains(bc.getType())) continue;
-				}
-				if(comp.get_Diff_Dist() < sel.get_Diff_Dist()) sel = comp;
-			}
-			return sel;
-		}
 	}
+
+	public static List<Block_Color_Target_Data> get_from_Near(Color col){
+		List<Block_Color_Target_Data> list = new ArrayList<Block_Color_Target_Data>();
+		List<Block_Color> choose = new ArrayList<Block_Color>(Arrays.asList(Block_Color.values()));
+
+		while(true) {
+			Block_Color_Target_Data sel = null;
+			for(Block_Color bl : choose) {
+				Block_Color_Target_Data bl_data = new Block_Color_Target_Data(bl,col);
+				if(sel == null) {
+					sel = bl_data;
+					continue;
+				}
+				if(sel.get_Diff_Dist() > bl_data.get_Diff_Dist()) {
+					sel = bl_data;
+				}
+			}
+			list.add(sel);
+			choose.remove(sel.getBlock_color());
+			if(choose.size() == 0) break;
+		}
+
+		return list;
+	}
+
+	public static List<Block_Color> get_Block_Color(List<Block_Type> filter){
+		if(filter==null) return null;
+		List<Block_Color> list = new ArrayList<Block_Color>();
+		for(Block_Color bc : Block_Color.values()) {
+			if(filter.contains(bc.getType())) list.add(bc);
+		}
+		return list;
+	}
+
+	public static Block_Color_Target_Data get_Most_Near(List<Block_Color> blocks,Color col) {
+		Block_Color_Target_Data sel = new Block_Color_Target_Data(blocks.get(0),col);
+		for(Block_Color bc : blocks) {
+			Block_Color_Target_Data comp = new Block_Color_Target_Data(bc,col);
+			if(comp.get_Diff_Dist() < sel.get_Diff_Dist()) sel = comp;
+		}
+		return sel;
+	}
+
+
+
 
 }

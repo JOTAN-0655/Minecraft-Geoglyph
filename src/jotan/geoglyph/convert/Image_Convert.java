@@ -14,7 +14,6 @@ import org.bukkit.Material;
 import jotan.geoglyph.Main;
 import jotan.geoglyph.convert.Block_Color_Convert.Block_Color_Target_Data;
 import jotan.geoglyph.convert.Block_Color_Define.Block_Color;
-import jotan.geoglyph.convert.Block_Color_Define.Block_Type;
 
 public class Image_Convert {
 
@@ -65,14 +64,14 @@ public class Image_Convert {
 		private Material material;
 	}
 
-	public static List<Block_Data> convert_Image(BufferedImage image,List<Block_Type> bt,GeoglyphDirection direction){
+	public static List<Block_Data> convert_Image(BufferedImage image,List<Block_Color> bc_l,GeoglyphDirection direction){
 		List<Block_Data> data = new ArrayList<Block_Data>();
 
 		for(int y = 0; y < image.getHeight();y++) { for(int x = 0; x < image.getWidth();x++) {
 
 			Block_Color bc = Block_Color.RED_CONCRETE;
 			try {
-				bc = get_Image_Color(image, x, y,bt);
+				bc = get_Image_Color(image, x, y,bc_l);
 			} catch (NoSuchAlgorithmException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -142,7 +141,7 @@ public class Image_Convert {
 		if(r>255) r=255;
 		return r;
 	}
-	public static Color error_diffuse_Color(Block_Color_Target_Data data,Color col,double mul) {
+	public static Color error_diffused_Color(Block_Color_Target_Data data,Color col,double mul) {
 		int r = (int) (col.getRed() - data.get_Diff_R()*mul);
 		int g = (int) (col.getGreen() - data.get_Diff_G()*mul);
 		int b = (int) (col.getBlue() - data.get_Diff_B()*mul);
@@ -153,22 +152,23 @@ public class Image_Convert {
 		return new Color(r,g,b);
 	}
 
-	public static Block_Color get_Image_Color(BufferedImage original,int x ,int y,List<Block_Type> bt) throws NoSuchAlgorithmException
+	public static Block_Color get_Image_Color(BufferedImage original,int x ,int y,List<Block_Color> bc) throws NoSuchAlgorithmException
     {
 		Color pixel_color = new Color(original.getRGB(x, y));
 
-		Block_Color_Target_Data near = Block_Color_Target_Data.get_Most_Near(pixel_color, bt);
+		Block_Color_Target_Data near = Block_Color_Convert.get_Most_Near(bc, pixel_color);
 
 		if(original.getWidth() > x + 1 && original.getHeight() > y)
-			original.setRGB(x+1, y, error_diffuse_Color(near,new Color(original.getRGB(x+1, y)),7.0/16.0).getRGB());
+			original.setRGB(x+1, y, error_diffused_Color(near,new Color(original.getRGB(x+1, y)),7.0/16.0).getRGB());
 		if(original.getWidth() > x && original.getHeight() > y + 1)
-			original.setRGB(x, y+1, error_diffuse_Color(near,new Color(original.getRGB(x, y+1)),5.0/16.0).getRGB());
+			original.setRGB(x, y+1, error_diffused_Color(near,new Color(original.getRGB(x, y+1)),5.0/16.0).getRGB());
 		if(original.getWidth() > x + 1 && original.getHeight() > y + 1)
-			original.setRGB(x+1, y+1, error_diffuse_Color(near,new Color(original.getRGB(x+1, y+1)),3.0/16.0).getRGB());
+			original.setRGB(x+1, y+1, error_diffused_Color(near,new Color(original.getRGB(x+1, y+1)),3.0/16.0).getRGB());
 		if(0 <= x - 1 && original.getHeight() > y + 1)
-			original.setRGB(x-1, y+1, error_diffuse_Color(near,new Color(original.getRGB(x-1, y+1)),1.0/16.0).getRGB());
+			original.setRGB(x-1, y+1, error_diffused_Color(near,new Color(original.getRGB(x-1, y+1)),1.0/16.0).getRGB());
 		return near.getBlock_color();
 
     }
+
 
 }
